@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Passion or Addiction?</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2b2350;--paper:rgba(255,255,255,.72);--line:rgba(43,35,80,.18);box-sizing:border-box}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:#b9b4ee;color:var(--ink);font-family:Figtree,system-ui,sans-serif;touch-action:none;user-select:none}
+canvas{position:fixed;inset:0;width:100%;height:100%;cursor:grab}
+canvas.drag{cursor:grabbing}
+main{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;padding:env(safe-area-inset-top,0) 16px env(safe-area-inset-bottom,0);text-align:center}
+h1{font:300 clamp(2rem,6vw,4.2rem)/1.05 Fraunces,Georgia,serif;margin:0 0 .4rem;letter-spacing:-.02em}
+.theme{font:italic 300 clamp(1rem,2.2vw,1.45rem)/1.4 Fraunces,Georgia,serif;max-width:34ch;margin:.5rem auto 0}
+svg.art{width:min(46vh,78vw);height:auto;overflow:visible;margin:.4rem 0}
+.traits{display:flex;gap:1.4rem;font-size:.95rem;font-weight:600;flex-wrap:wrap;justify-content:center}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;gap:8px;justify-content:center;padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px))}
+button{font:600 .95rem Figtree,sans-serif;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.6rem 1.1rem;cursor:pointer;backdrop-filter:blur(8px)}
+button:hover,button[aria-pressed=true]{background:#fff}
+button:focus-visible,[contenteditable]:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+aside{position:fixed;top:0;right:0;bottom:0;width:min(520px,100%);background:rgba(255,255,255,.86);backdrop-filter:blur(14px);padding:calc(20px + env(safe-area-inset-top,0px)) 24px 90px;overflow-y:auto;transform:translateX(105%);transition:transform .35s ease;touch-action:pan-y;user-select:text;border-left:1px solid var(--line)}
+aside.open{transform:none}
+aside h2{font:600 1.5rem Fraunces,serif;margin:0 0 .8rem}
+aside p{font:300 1.05rem/1.7 Fraunces,Georgia,serif;margin:0 0 1rem;max-width:62ch}
+.field{border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font:400 1rem/1.6 Figtree,sans-serif;min-height:4.5rem;margin:0 0 1.2rem;background:rgba(255,255,255,.6)}
+.field:empty:before{content:attr(data-ph);color:rgba(43,35,80,.55)}
+h3{font:600 1rem Figtree,sans-serif;margin:1rem 0 .3rem}
+.hint{font-size:.85rem;opacity:.75}
+@media(prefers-reduced-motion:reduce){aside{transition:none}}
+</style></head>
+<body>
+<canvas id="bg" aria-label="Draggable gradient with spirals and clouds of words from the story"></canvas>
+<main>
+<h1>Passion or Addiction?</h1>
+<svg class="art" viewBox="-200 -130 400 260" role="img" aria-label="An eye whose iris is a spiral of words, with a flame at its center">
+<defs><radialGradient id="g" cx="50%" cy="40%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#f6d3ec"/></radialGradient>
+<radialGradient id="f"><stop offset="0" stop-color="#fff6e0"/><stop offset="1" stop-color="#ff9ec9"/></radialGradient>
+<path id="sp" d="M0 0 C 6 -6 14 -4 14 4 C 14 18 -8 22 -20 8 C -36 -12 -14 -40 14 -38 C 48 -34 58 8 40 36 C 18 66 -34 62 -56 28"/></defs>
+<path d="M-190 0 Q0 -140 190 0 Q0 140 -190 0Z" fill="url(#g)" stroke="#2b2350" stroke-width="2"/>
+<g id="iris"><circle r="74" fill="#8f9bf2" fill-opacity=".55" stroke="#2b2350" stroke-width="1.5"/>
+<text font-family="Fraunces,serif" font-size="8" fill="#2b2350"><textPath href="#sp" startOffset="0">curiosity · one more question · every key opened a door · three more behind it · rabbit hole · why a game stuttered · how the parts talked · a hundred small gifts</textPath></text></g>
+<path d="M0 -26 C 22 -6 18 22 0 24 C -18 22 -22 -6 0 -26Z" fill="url(#f)" stroke="#2b2350" stroke-width="1.5"/>
+<circle cx="0" cy="8" r="5" fill="#2b2350"/>
+<g stroke="#2b2350" stroke-width="1.2" fill="none" opacity=".7"><path d="M-170 -4 L-196 -22"/><path d="M170 -4 L196 -22"/><path d="M0 -100 L0 -126"/></g>
+</svg>
+<div class="traits"><span>Curiosity: the key</span><span>Obsession: the spiral</span><span>Perceptiveness: the eye</span></div>
+<p class="theme">Curiosity that stays locked inside burns the person who carries it, but curiosity that is shared becomes a light for others.</p>
+</main>
+
+<nav>
+<button data-p="story" aria-pressed="false">The story</button>
+<button data-p="choices" aria-pressed="false">Literature &amp; art</button>
+<button data-p="me" aria-pressed="false">Personality</button>
+</nav>
+
+<aside id="panel" aria-live="polite">
+<section data-s="story" hidden>
+<h2>Passion or Addiction?</h2>
+<p>I found love on January 1st, 2026, and it was waiting for me in my study.</p>
+<p>The morning was still gray when I opened the door. On the desk sat a computer built around an NVIDIA GeForce 3070, eight gigabytes of memory, and a monitor so sleek it seemed to hum with its own private light. "Wha—" was all I managed.</p>
+<p>"Do you like it?" My brother stood in the doorway, grinning like a magician who had just finished his best trick.</p>
+<p>I had no answer. It was the first time in my life I had been speechless. I stood frozen, afraid that if I blinked it would vanish, that someone had made a mistake and this gift belonged to a luckier person. "It's beautiful," I finally whispered.</p>
+<p>After that, my days rearranged themselves around it. I woke and went to it before I had fully stopped dreaming, and I played for hours until the window went dark. At night, it followed me into sleep. In that single week, a quiet obsession took root.</p>
+<p>But the obsession was never really about the computer. It was about what the computer meant: the innovation, the adaptability, the limitless doors that opened every time I pressed a key. It felt like a tool carried here from another world, and I was drawn to it like a moth to a flame.</p>
+<p>And like the moth, I didn't notice the heat at first. Curiosity gave me a hundred small gifts. I learned how the parts inside the machine talked to one another. I learned why a game stuttered and how to fix it. Every answer felt like a key, and every key opened a door with three more behind it. But the same hunger that fed me was also consuming me. Dinners went cold. Messages from friends sat unanswered. Homework waited while I chased one more question down one more rabbit hole. Somewhere along the way, I had stopped exploring the world and started disappearing from it.</p>
+<p>Months later, I began to wonder what exactly I had caught. Was this passion, or was it an addiction? And underneath that question sat a stranger one. Was I drawn to computers because I was already the kind of person who loses hours to the way things work? Or had the computers made me that person?</p>
+<p>The moment I finally saw myself clearly was small. My brother, the same one who had stood grinning in the doorway, asked me how the computer actually worked. I opened my mouth to answer and found that I had a mountain of knowledge and no way to hand any of it to him. I fumbled through jargon while his eyes glazed over. All that curiosity, and I had kept it locked in my own head, like a library with no door.</p>
+<p>That was when I understood the difference between collecting knowledge and using it. So I tried something harder than learning: I tried explaining. I slowed down. I used comparisons, like calling memory a desk and storage a filing cabinet. Watching understanding spread across my brother's face felt better than any answer I had found alone. My curiosity hadn't shrunk. It had grown a purpose.</p>
+<p>It also changed how I thought about fitting in. For years I had treated my intensity as a flaw, something to hide so I could blend in with people who seemed content to skim the surface of things. Conformity offered a quiet bargain: dim the thing that makes you different, and the world will make room for you. But I had it backward. The problem was never the depth of my curiosity, it was keeping it to myself. Being an individual, I realized, does not require a grand act of rebellion. It only requires following your attention honestly, and then having the courage to bring others along.</p>
+<p>I still can't say whether I love computers because of who I am, or whether I am who I am because I love them. I've stopped needing to know. What I learned that morning, standing speechless in the gray light, is that a consuming curiosity is both a flame and a lamp. Left alone, it burns. Shared, it lights the way. It is the most honest part of me, and I'm finally learning to carry it well.</p>
+</section>
+<section data-s="choices" hidden>
+<h2>Literature &amp; art choices</h2>
+<p class="hint">Click each box and type your own. These are placeholders until you add your real choices.</p>
+<h3>Literature piece</h3><div class="field" contenteditable data-ph="Title, author, and why it matches your story"></div>
+<h3>Art piece</h3><div class="field" contenteditable data-ph="Title, artist, and why it matches your story"></div>
+<h3>Rationale</h3><div class="field" contenteditable data-ph="How both pieces echo the theme of curiosity as flame and lamp"></div>
+</section>
+<section data-s="me" hidden>
+<h2>Personality results</h2>
+<p class="hint">Click the box and type your assessment results.</p>
+<h3>My results</h3><div class="field" contenteditable data-ph="Paste your personality assessment results"></div>
+<h3>How they connect</h3><div class="field" contenteditable data-ph="Link your results to curiosity, obsession, perceptiveness, and the theme"></div>
+</section>
+</aside>
+
+<script>
+const cv=document.getElementById('bg'),ctx=cv.getContext('2d');
+let W,H,dpr;function size(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+addEventListener('resize',size);size();
+const PH=["a hundred small gifts","every key opened a door","three more behind it","one more rabbit hole","a moth to a flame","a quiet obsession took root","hum with its own private light","how the parts talked to one another","why a game stuttered","a library with no door","memory is a desk","storage a filing cabinet","a mountain of knowledge","the morning was still gray","speechless","collecting knowledge and using it","a flame and a lamp","shared, it lights the way","follow your attention","bring others along","passion or addiction?","a tool from another world","limitless doors","I had it backward","it grew a purpose","the gray light","love in my study","curiosity","obsession","perceptiveness"];
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const TW=1800,TH=1300;
+const spirals=[[500,400,1],[1300,300,-1],[900,950,1],[200,1000,-1],[1550,1050,1]];
+const clouds=[];for(let c=0;c<9;c++){const cx=rnd()*TW,cy=rnd()*TH,ws=[];for(let i=0;i<9;i++)ws.push({t:PH[(rnd()*PH.length)|0],x:(rnd()-.5)*240,y:(rnd()-.5)*110,s:11+rnd()*9,a:.28+rnd()*.3,p:rnd()*6.28});clouds.push({cx,cy,ws})}
+let ox=0,oy=0,vx=0,vy=0,drag=false,lx=0,ly=0;
+cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;cv.classList.add('drag');cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',e=>{if(!drag)return;vx=e.clientX-lx;vy=e.clientY-ly;ox+=vx;oy+=vy;lx=e.clientX;ly=e.clientY});
+const up=()=>{drag=false;cv.classList.remove('drag')};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+const mod=(a,n)=>((a%n)+n)%n;
+function blob(x,y,r,col){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,col);g.addColorStop(1,col.replace(/[\d.]+\)$/,'0)'));ctx.fillStyle=g;ctx.fillRect(0,0,W,H)}
+function frame(t){
+ if(!drag){ox+=vx;oy+=vy;vx*=.95;vy*=.95}
+ const R=Math.max(W,H);
+ ctx.fillStyle='#cfc4f5';ctx.fillRect(0,0,W,H);
+ const spots=[[.2,.25,'rgba(120,160,255,1)',.9,1],[.8,.2,'rgba(255,170,220,1)',.8,.6],[.5,.8,'rgba(190,160,255,1)',.95,.8],[.15,.85,'rgba(255,170,220,1)',.7,1.3],[.9,.75,'rgba(120,160,255,1)',.75,.5],[.5,.15,'rgba(200,175,255,1)',.7,1.1]];
+ spots.forEach(([fx,fy,col,rad,k],i)=>{const x=mod(fx*W+ox*k+Math.sin(t/4000+i)*30,W+R)-R/2,y=mod(fy*H+oy*k+Math.cos(t/5000+i)*30,H+R)-R/2;blob(x,y,R*rad*.6,col)});
+ ctx.fillStyle='#2b2350';ctx.textBaseline='middle';ctx.textAlign='center';
+ const px=ox*.55,py=oy*.55;
+ for(let ix=-1;ix<=1;ix++)for(let iy=-1;iy<=1;iy++){
+  const bx=mod(px,TW)+ix*TW-TW/2+W/2*0,by=mod(py,TH)+iy*TH-TH/2;
+  spirals.forEach(([sx,sy,d],si)=>{
+   for(let i=0;i<46;i++){const th=i*.48,r=14+th*10,a=th*d+t/9000*d;
+    const x=bx+sx+Math.cos(a)*r,y=by+sy+Math.sin(a)*r;
+    if(x<-80||x>W+80||y<-80||y>H+80)continue;
+    ctx.save();ctx.translate(x,y);ctx.rotate(a+Math.PI/2*d);ctx.globalAlpha=.55-i/130;ctx.font=(9+i*.1)+'px Fraunces,serif';
+    ctx.fillText(PH[(i+si*5)%PH.length].split(' ').slice(0,2).join(' '),0,0);ctx.restore()}});
+  clouds.forEach(c=>c.ws.forEach(w=>{const x=bx+c.cx+w.x+Math.sin(t/3000+w.p)*6,y=by+c.cy+w.y+Math.cos(t/3500+w.p)*5;
+   if(x<-200||x>W+200||y<-40||y>H+40)return;ctx.globalAlpha=w.a;ctx.font='300 '+w.s+'px Fraunces,serif';ctx.fillText(w.t,x,y)}))}
+ ctx.globalAlpha=1;
+ const ir=document.getElementById('iris');if(ir)ir.setAttribute('transform','rotate('+(t/60)%360+')');
+ requestAnimationFrame(frame)}
+if(matchMedia('(prefers-reduced-motion:reduce)').matches){document.getElementById('iris').removeAttribute('id')}
+requestAnimationFrame(frame);
+const panel=document.getElementById('panel'),btns=[...document.querySelectorAll('nav button')];
+btns.forEach(b=>b.onclick=()=>{const was=b.getAttribute('aria-pressed')==='true';btns.forEach(x=>x.setAttribute('aria-pressed','false'));
+ panel.classList.toggle('open',!was);if(was)return;b.setAttribute('aria-pressed','true');
+ panel.querySelectorAll('section').forEach(s=>s.hidden=s.dataset.s!==b.dataset.p);panel.scrollTop=0});
+addEventListener('keydown',e=>{if(e.key==='Escape'){panel.classList.remove('open');btns.forEach(x=>x.setAttribute('aria-pressed','false'))}});
+</script>
+</body></html>
